@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JPM Grup WA Premium | Admin Panel</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #075e54, #128c7e);
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .badge-cuan {
+      background: #fbbf24;
+      color: #1f2937;
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 50px;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+
+    /* Kategori */
+    .kategori {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .kategori-btn {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      padding: 10px 25px;
+      border-radius: 50px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .kategori-btn.active, .kategori-btn:hover {
+      background: #25d366;
+      color: #075e54;
+    }
+
+    /* Grid Grup */
+    .grid-grup {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .card-grup {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+
+    .card-grup:hover {
+      transform: translateY(-5px);
+    }
+
+    .btn-join {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 50px;
+      width: 100%;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* Panel Admin (tersembunyi) */
+    .admin-panel {
+      background: #1e293b;
+      color: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 30px;
+      display: none;
+    }
+
+    .admin-panel.show {
+      display: block;
+    }
+
+    .admin-input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: none;
+    }
+
+    .btn-admin {
+      background: #f59e0b;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 30px;
+      padding: 25px;
+      text-align: center;
+    }
+
+    .qris-img {
+      width: 100%;
+      max-width: 250px;
+      margin: 20px auto;
+      display: block;
+    }
+
+    .contact-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 15px 0;
+    }
+
+    .contact-buttons a {
+      flex: 1;
+      padding: 10px;
+      border-radius: 50px;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .how-to-section {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      margin-top: 30px;
+    }
+
+    .step {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      padding: 10px;
+      background: #f9fafb;
+      border-radius: 15px;
+    }
+
+    .step-number {
+      width: 40px;
+      height: 40px;
+      background: #25d366;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+      padding: 20px;
+    }
+
+    .link-list {
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 15px;
+      margin-top: 15px;
+    }
+
+    .link-item {
+      background: #334155;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>📱 JPM Grup WA Premium</h1>
+    <p>Akses grup eksklusif • Hanya Rp1.000</p>
+    <div class="badge-cuan">‼️ Bayar = Dapat Link Grup (Tidak Auto Ditambahkan Admin)</div>
+  </div>
+
+  <!-- Filter -->
+  <div class="kategori">
+    <button class="kategori-btn active" data-kategori="semua">Semua Grup</button>
+    <button class="kategori-btn" data-kategori="bisnis">Bisnis</button>
+    <button class="kategori-btn" data-kategori="investasi">Investasi</button>
+    <button class="kategori-btn" data-kategori="edukasi">Edukasi</button>
+  </div>
+
+  <div class="grid-grup" id="daftarGrup"></div>
+
+  <!-- Cara Bayar -->
+  <div class="how-to-section" id="pembayaran">
+    <h3>📌 Cara Dapat Link Grup (Bayar Rp1.000)</h3>
+    <div class="step"><div class="step-number">1</div><div>Scan QRIS di bawah</div></div>
+    <div class="step"><div class="step-number">2</div><div>Transfer <strong>Rp1.000</strong></div></div>
+    <div class="step"><div class="step-number">3</div><div>Kirim bukti ke WA/Telegram/IG</div></div>
+    <div class="step"><div class="step-number">4</div><div>Admin akan kirim <strong>LINK GRUP</strong> (bukan ditambahkan manual)</div></div>
+    
+    <img src="https://files.catbox.moe/8izjx2.jpg" alt="QRIS" class="qris-img" onerror="this.src='https://placehold.co/300x300?text=QRIS+DANA'">
+    
+    <div class="contact-buttons">
+      <a href="https://wa.me/6285936682759" style="background:#25d366;">💚 WhatsApp</a>
+      <a href="https://t.me/Hirrvon" style="background:#0088cc;">✈️ Telegram</a>
+      <a href="https://instagram.com/hirrvontrinity" style="background:#e4405f;">📷 Instagram</a>
+    </div>
+    <p style="text-align:center; margin-top:10px;">DM: @hirrvontrinity / محمد طاهر</p>
+  </div>
+
+  <!-- PANEL ADMIN (rahasia) -->
+  <div class="admin-panel" id="adminPanel">
+    <h3>🔐 Panel Admin - Tambah Link Grup (Gratis)</h3>
+    <p>Kamu bisa tambah link grup baru, pengguna tetap beli Rp1.000 untuk 1 link utama</p>
+    <input type="text" id="newLink" class="admin-input" placeholder="https://chat.whatsapp.com/xxxx" value="https://chat.whatsapp.com/ILWplAjaar61CDgq3xffhP">
+    <input type="text" id="newNama" class="admin-input" placeholder="Nama grup baru">
+    <select id="newKategori" class="admin-input">
+      <option value="bisnis">Bisnis</option>
+      <option value="investasi">Investasi</option>
+      <option value="edukasi">Edukasi</option>
+    </select>
+    <button class="btn-admin" onclick="tambahLinkGrup()">➕ Tambah Link Grup Baru</button>
+    
+    <div class="link-list">
+      <strong>📋 Daftar Link Grup yang Tersedia:</strong>
+      <div id="linkList"></div>
+    </div>
+    <button class="btn-admin" style="background:#ef4444; margin-top:10px;" onclick="logoutAdmin()">🚪 Tutup Panel</button>
+  </div>
+
+  <footer>
+    <p>⚠️ Setelah bayar dan konfirmasi, Anda akan dikirimi LINK GRUP (bukan ditambahkan otomatis)</p>
+    <p style="font-size:12px; margin-top:10px;">© 2025 JPM Grup Premium</p>
+  </footer>
+</div>
+
+<script>
+  // ========== DATA LINK GRUP (bisa ditambah admin) ==========
+  let linkGrupUtama = "https://chat.whatsapp.com/ILWplAjaar61CDgq3xffhP";
+  
+  // Kumpulan grup yang ditampilkan (semua mengarah ke linkGrupUtama)
+  let grupData = [
+    { id: 1, nama: "Grup Premium Cuan 2025", deskripsi: "Tempat jualan & bisnis online", kategori: "bisnis", anggota: "2.1k", icon: "🛍️" },
+    { id: 2, nama: "Saham & Crypto Signal", deskripsi: "Signal daily + edukasi", kategori: "investasi", anggota: "1.5k", icon: "📈" },
+    { id: 3, nama: "AI & ChatGPT Master", deskripsi: "Belajar AI untuk cuan", kategori: "edukasi", anggota: "3.2k", icon: "🤖" },
+    { id: 4, nama: "UMKM Digital", deskripsi: "Tips jualan online", kategori: "bisnis", anggota: "980", icon: "🏪" }
+  ];
+
+  // ========== FUNGSI TAMPIL GRUP ==========
+  function renderGrup(filter = "semua") {
+    const grid = document.getElementById("daftarGrup");
+    let filtered = grupData;
+    if (filter !== "semua") filtered = grupData.filter(g => g.kategori === filter);
+    
+    grid.innerHTML = filtered.map(grup => `
+      <div class="card-grup">
+        <div class="icon-grup" style="font-size:3rem">${grup.icon}</div>
+        <div class="nama-grup" style="font-size:1.4rem; font-weight:bold; color:#075e54">${escapeHtml(grup.nama)}</div>
+        <div class="deskripsi" style="color:#666; margin:10px 0">${escapeHtml(grup.deskripsi)}</div>
+        <div class="info" style="display:flex; justify-content:space-between; margin:15px 0; color:#888">
+          <span>👥 ${grup.anggota} anggota</span>
+          <span>💰 Rp1.000</span>
+        </div>
+        <button class="btn-join" onclick="showPayment()">
+          🔓 Beli Akses (Dapat Link)
+        </button>
+      </div>
+    `).join('');
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+      if (m === '&') return '&amp;';
+      if (m === '<') return '&lt;';
+      if (m === '>') return '&gt;';
+      return m;
+    });
+  }
+
+  // Tampilkan modal/section pembayaran
+  function showPayment() {
+    document.getElementById('pembayaran').scrollIntoView({ behavior: 'smooth' });
+    alert("⚠️ PERHATIAN: Setelah transfer Rp1.000 dan konfirmasi, Anda akan diberikan LINK GRUP (bukan ditambahkan manual oleh admin). Tidak ada garansi auto-add member.");
+  }
+
+  // ========== PANEL ADMIN (untuk tambah link grup percuma) ==========
+  let adminPassword = "admin123"; // Ganti sesuai keinginan
+
+  function bukaAdmin() {
+    let pwd = prompt("Masukkan password admin:");
+    if (pwd === adminPassword) {
+      document.getElementById('adminPanel').classList.add('show');
+      updateLinkList();
+    } else {
+      alert("Password salah!");
+    }
+  }
+
+  function tambahLinkGrup() {
+    let linkBaru = document.getElementById('newLink').value.trim();
+    let namaBaru = document.getElementById('newNama').value.trim();
+    let kategoriBaru = document.getElementById('newKategori').value;
+    
+    if (!linkBaru || !namaBaru) {
+      alert("Isi link dan nama grup!");
+      return;
+    }
+    
+    if (!linkBaru.includes("chat.whatsapp.com")) {
+      alert("Link harus dari chat.whatsapp.com");
+      return;
+    }
+    
+    // Simpan sebagai linkGrupUtama yang baru (karena admin bisa ganti link utama)
+    linkGrupUtama = linkBaru;
+    
+    // Tambah juga ke daftar grup virtual
+    let newId = grupData.length + 1;
+    grupData.push({
+      id: newId,
+      nama: namaBaru,
+      deskripsi: "Grup baru (link bisa berubah kapan saja)",
+      kategori: kategoriBaru,
+      anggota: "0",
+      icon: "🔗"
+    });
+    
+    renderGrup(document.querySelector('.kategori-btn.active').getAttribute('data-kategori'));
+    updateLinkList();
+    alert("✅ Link grup utama berhasil diupdate!\nSekarang pembeli akan mendapat link: " + linkGrupUtama);
+  }
+  
+  function updateLinkList() {
+    const container = document.getElementById('linkList');
+    container.innerHTML = `<div class="link-item">🔗 LINK UTAMA SAAT INI:<br>${linkGrupUtama}</div>`;
+  }
+  
+  function logoutAdmin() {
+    document.getElementById('adminPanel').classList.remove('show');
+  }
+  
+  // Filter kategori
+  document.querySelectorAll('.kategori-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.kategori-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+      renderGrup(this.getAttribute('data-kategori'));
+    });
+  });
+  
+  renderGrup("semua");
+  
+  // Shortcut buka admin: ketik 'admin' 3x cepat (atau pake konsol)
+  let adminTrigger = "";
+  document.addEventListener('keypress', (e) => {
+    adminTrigger += e.key;
+    if (adminTrigger.includes("admin")) {
+      bukaAdmin();
+      adminTrigger = "";
+    }
+    if (adminTrigger.length > 10) adminTrigger = "";
+  });
+  
+  console.log("💡 Tips: Ketik 'admin' di keyboard untuk buka panel admin");
+</script>
+</body>
+</html>
